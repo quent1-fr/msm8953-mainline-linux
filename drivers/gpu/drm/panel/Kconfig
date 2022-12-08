@@ -806,4 +806,9 @@ config DRM_PANEL_ILI7807_FHDPLUS
 	help
 	  Say Y here if you want to enable support for the ILITEK
 	  ILI7807 controller for 1080x2280 LCD panels (found on Xiaomi Mi A2 Lite).
+
+config DRM_PANEL_HX8279_TV101WUM_WUXGA
+	tristate "HX8279 TV101WUM WUXGA DSI command mode panel"
+	select DRM_PANEL_MIPI_DSI_COMMON
+
 endmenu
