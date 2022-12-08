@@ -45,6 +45,16 @@
 		};
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+
+		volume-up {
+			label = "Volume Up";
+			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_VOLUMEUP>;
+		};
+	};
+
 	reserved-memory {
 		memory@82800000 {
 			reg = <0x0 0x82800000 0x0 0x2800000>;
