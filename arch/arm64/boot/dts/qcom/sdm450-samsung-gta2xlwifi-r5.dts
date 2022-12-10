@@ -104,6 +104,84 @@
 		};
 	};
 
+	i2c_gpio_1: i2c-gpio-1 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 16 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 17 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c_gpio_2: i2c-gpio-2 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 21 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 20 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c_gpio_3: i2c-gpio-3 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 39 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 38 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c_gpio_4: i2c-gpio-4 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 64 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 65 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	i2c_gpio_5: i2c-gpio-5 {
+		compatible = "i2c-gpio";
+		sda-gpios = <&tlmm 131 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&tlmm 128 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	ts_avdd: vreg-ts-avdd {
+		compatible = "regulator-fixed";
+
+		enable-active-high;
+		gpio = <&tlmm 139 GPIO_ACTIVE_HIGH>;
+		regulator-boot-on;
+		regulator-max-microvolt = <3300000>;
+		regulator-min-microvolt = <3300000>;
+		regulator-name = "ts_avdd";
+	};
+
+	ts_vdd: vreg-ts-vdd {
+		compatible = "regulator-fixed";
+
+		enable-active-high;
+		gpio = <&tlmm 139 GPIO_ACTIVE_HIGH>;
+		regulator-boot-on;
+		regulator-max-microvolt = <1800000>;
+		regulator-min-microvolt = <1800000>;
+		regulator-name = "ts_vdd";
+		vin-supply = <&pm8953_s4>;
+	};
+
+	sensors_vdd: vreg-sensors-1v8 {
+		compatible = "regulator-fixed";
+
+		enable-active-high;
+		gpio = <&expander 6 GPIO_ACTIVE_HIGH>;
+		regulator-max-microvolt = <1800000>;
+		regulator-min-microvolt = <1800000>;
+		regulator-name = "sensors_vdd";
+	};
+
 };
 
 &dsi0 {
@@ -118,6 +196,10 @@
 	panel@0 {
 		compatible = "mdss,hx8279-tv101wum-wuxga";
 		reg = <0>;
+
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&panel_active>;
+		pinctrl-1 = <&panel_sleep>;
 
 		reset-gpios = <&tlmm 50 GPIO_ACTIVE_LOW>;
 
@@ -146,6 +228,21 @@
 	vdda-phy-dpdm-supply = <&pm8953_l13>;
 };
 
+&i2c_gpio_2 {
+	expander: gpio@20 {
+		compatible = "nxp,pcal6416";
+		reg = <0x20>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&expander_reset_deasserted>;
+
+		vcc-supply = <&pm8953_l5>;
+
+		gpio-controller;
+	#gpio-cells = <2>;
+	};
+};
+
 &iris {
 	vddxo-supply = <&pm8953_l7>;
 	vddrfa-supply = <&pm8953_l19>;
@@ -164,7 +261,7 @@
 
 &pronto {
 	status = "okay";
-	
+
 	vddpx-supply = <&pm8953_l5>;
 };
 
@@ -280,6 +377,30 @@
 
 	vmmc-supply = <&pm8953_l11>;
 	vqmmc-supply = <&pm8953_l12>;
+};
+
+&tlmm {
+	expander_reset_deasserted: expander-reset-pins {
+		pins = "gpio33";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+		output-high;
+	};
+
+	panel_active: panel-default-pins {
+		pins = "gpio35", "gpio93";
+		function = "gpio";
+		drive-strength = <8>;
+		output-high;
+	};
+
+	panel_sleep: panel-sleep-pins {
+		pins = "gpio35", "gpio93";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
 };
 
 &uart_0 {
