@@ -791,17 +791,21 @@ ssize_t mipi_dsi_dcs_write_buffer(struct mipi_dsi_device *dsi,
 
 	switch (len) {
 	case 0:
+		printk(KERN_INFO "DBGQBR - mipi_dsi_dcs_write_buffer -> case 0");
 		return -EINVAL;
 
 	case 1:
+		printk(KERN_INFO "DBGQBR - mipi_dsi_dcs_write_buffer -> case 1");
 		msg.type = MIPI_DSI_DCS_SHORT_WRITE;
 		break;
 
 	case 2:
+		printk(KERN_INFO "DBGQBR - mipi_dsi_dcs_write_buffer -> case 2");
 		msg.type = MIPI_DSI_DCS_SHORT_WRITE_PARAM;
 		break;
 
 	default:
+		printk(KERN_INFO "DBGQBR - mipi_dsi_dcs_write_buffer -> case defaut");
 		msg.type = MIPI_DSI_DCS_LONG_WRITE;
 		break;
 	}

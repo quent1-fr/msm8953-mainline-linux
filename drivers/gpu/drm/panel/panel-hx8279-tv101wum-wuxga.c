@@ -36,6 +36,8 @@ struct hx8279_tv101wum_wuxga *to_hx8279_tv101wum_wuxga(struct drm_panel *panel)
 
 static void hx8279_tv101wum_wuxga_reset(struct hx8279_tv101wum_wuxga *ctx)
 {
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_reset has been called");
+
 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 	usleep_range(7000, 8000);
 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
@@ -45,6 +47,9 @@ static void hx8279_tv101wum_wuxga_reset(struct hx8279_tv101wum_wuxga *ctx)
 static int hx8279_tv101wum_wuxga_on(struct hx8279_tv101wum_wuxga *ctx)
 {
 	struct mipi_dsi_device *dsi = ctx->dsi;
+
+
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_on has been called");
 
 	dsi_dcs_write_seq(dsi, 0xb0, 0x01);
 	dsi_dcs_write_seq(dsi, 0xe0, 0x26);
@@ -337,6 +342,8 @@ static int hx8279_tv101wum_wuxga_off(struct hx8279_tv101wum_wuxga *ctx)
 {
 	struct mipi_dsi_device *dsi = ctx->dsi;
 
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_off has been called");
+
 	dsi_dcs_write_seq(dsi, 0xb0, 0x00);
 	dsi_dcs_write_seq(dsi, 0xb2, 0x00);
 	msleep(100);
@@ -349,6 +356,8 @@ static int hx8279_tv101wum_wuxga_prepare(struct drm_panel *panel)
 	struct hx8279_tv101wum_wuxga *ctx = to_hx8279_tv101wum_wuxga(panel);
 	struct device *dev = &ctx->dsi->dev;
 	int ret;
+
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_prepare has been called");
 
 	if (ctx->prepared)
 		return 0;
@@ -371,6 +380,8 @@ static int hx8279_tv101wum_wuxga_unprepare(struct drm_panel *panel)
 	struct hx8279_tv101wum_wuxga *ctx = to_hx8279_tv101wum_wuxga(panel);
 	struct device *dev = &ctx->dsi->dev;
 	int ret;
+
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_unprepare has been called");
 
 	if (!ctx->prepared)
 		return 0;
@@ -485,6 +496,9 @@ static int hx8279_tv101wum_wuxga_probe(struct mipi_dsi_device *dsi)
 	struct hx8279_tv101wum_wuxga *ctx;
 	int ret;
 
+
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_probe has been called");
+
 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
 	if (!ctx)
 		return -ENOMEM;
@@ -526,6 +540,9 @@ static int hx8279_tv101wum_wuxga_remove(struct mipi_dsi_device *dsi)
 {
 	struct hx8279_tv101wum_wuxga *ctx = mipi_dsi_get_drvdata(dsi);
 	int ret;
+
+
+	printk(KERN_INFO "DBGQBR - hx8279_tv101wum_wuxga_remove has been called");
 
 	ret = mipi_dsi_detach(dsi);
 	if (ret < 0)

@@ -389,14 +389,14 @@
 	};
 
 	panel_active: panel-default-pins {
-		pins = "gpio35", "gpio93";
+		pins = "gpio50", "gpio35";
 		function = "gpio";
 		drive-strength = <8>;
-		output-high;
+		bias-disable;
 	};
 
 	panel_sleep: panel-sleep-pins {
-		pins = "gpio35", "gpio93";
+		pins = "gpio50", "gpio35";
 		function = "gpio";
 		drive-strength = <2>;
 		bias-disable;
