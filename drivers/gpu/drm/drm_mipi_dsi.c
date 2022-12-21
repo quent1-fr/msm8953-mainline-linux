@@ -806,7 +806,6 @@ ssize_t mipi_dsi_dcs_write_buffer(struct mipi_dsi_device *dsi,
 
 	default:
 		printk(KERN_INFO "DBGQBR - mipi_dsi_dcs_write_buffer -> case defaut");
-		dump_stack();
 		msg.type = MIPI_DSI_DCS_LONG_WRITE;
 		break;
 	}

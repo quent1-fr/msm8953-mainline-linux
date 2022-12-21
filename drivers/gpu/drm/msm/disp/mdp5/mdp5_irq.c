@@ -26,6 +26,9 @@ static void mdp5_irq_error_handler(struct mdp_irq *irq, uint32_t irqstatus)
 	static DEFINE_RATELIMIT_STATE(rs, 5*HZ, 1);
 	extern bool dumpstate;
 
+	printk(KERN_INFO "DBGQBR - mdp5_irq_error_handler has been called");
+	dump_stack();
+
 	DRM_ERROR_RATELIMITED("errors: %08x\n", irqstatus);
 
 	if (dumpstate && __ratelimit(&rs)) {
